@@ -61,6 +61,9 @@ Plugin 'iamcco/mathjax-support-for-mkdp'
 Plugin 'iamcco/markdown-preview.vim'
 " markdown
 Plugin 'easymotion/vim-easymotion'
+" easymotion跳转
+Plugin 'tpope/vim-surround'
+" 包围
 
 
 " All of your Plugins must be added before the following line
