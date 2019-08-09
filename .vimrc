@@ -64,6 +64,9 @@ Plugin 'easymotion/vim-easymotion'
 " easymotion跳转
 Plugin 'tpope/vim-surround'
 " 包围
+Plugin 'Valloric/YouCompleteMe'
+" ycm
+
 
 
 " All of your Plugins must be added before the following line
@@ -93,7 +96,6 @@ endif
 syntax on
 colorscheme onedark
 let g:airline_theme='onedark'
-""hi Search term=reverse ctermbg=180 guifg=yellow guibg=yellow
 
 set background=dark
 set mouse=a
@@ -120,15 +122,15 @@ let mapleader = ','
 nnoremap <leader>ev :vsplit ~/.vimrc<cr>
 nnoremap <leader>sv :source ~/.vimrc<cr>
 " 空格取消高亮
-nnoremap <space> :nohl<cr>
+nnoremap <silent><space> :nohl<cr>
 " 滚屏使光标所在行处于屏幕中间
 nnoremap j jzz
 nnoremap k kzz
 " 正常模式下 <c-w>+j,k,h,l 调整分割窗口大小
-nnoremap <c-w>j :res +5<cr>
-nnoremap <c-w>k :res -5<cr>
-nnoremap <c-w>h :vertical res -5<cr>
-nnoremap <c-w>l :vertical res +5<cr>
+nnoremap <c-w>j :res +20<cr>
+nnoremap <c-w>k :res -20<cr>
+nnoremap <c-w>h :vertical res -20<cr>
+nnoremap <c-w>l :vertical res +20<cr>
 "窗口跳转
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -138,6 +140,13 @@ nnoremap <C-H> <C-W><C-H>
 " select the pasted block
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 nnoremap zpr :setlocal foldexpr=(getline(v:lnum)=~@/)?0:(getline(v:lnum-1)=~@/)\\|\\|(getline(v:lnum+1)=~@/)?1:2 foldmethod=expr foldlevel=0 foldcolumn=2<CR>:set foldmethod=manual<CR><CR>
+" 记录上次离开文件的光标位置
+augroup resCur
+    autocmd!
+    autocmd BufReadPost * call setpos(".", getpos("'\""))
+augroup END
+" abbrev
+source ~/.vim/abbrev.vim
 
 
 "python定制
@@ -190,25 +199,25 @@ let NERDTreeShowLineNumbers=1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 "不同颜色括号
-"let g:rbpt_colorpairs = [
-"                        \ ['brown',       'RoyalBlue3'],
-"                        \ ['Darkblue',    'SeaGreen3'],
-"                        \ ['darkgray',    'DarkOrchid3'],
-"                        \ ['darkgreen',   'firebrick3'],
-"                        \ ['darkcyan',    'RoyalBlue3'],
-"                        \ ['darkred',     'SeaGreen3'],
-"                        \ ['darkmagenta', 'DarkOrchid3'],
-"                        \ ['brown',       'firebrick3'],
-"                        \ ['gray',        'RoyalBlue3'],
-"                        \ ['darkmagenta', 'DarkOrchid3'],
-"                        \ ['Darkblue',    'firebrick3'],
-"                        \ ['darkgreen',   'RoyalBlue3'],
-"                        \ ['darkcyan',    'SeaGreen3'],
-"                        \ ['darkred',     'DarkOrchid3'],
-"                        \ ['red',         'firebrick3'],
-"                        \ ]
-"let g:rbpt_max = 16
-"let g:rbpt_loadcmd_toggle = 0
+let g:rbpt_colorpairs = [
+                       \ ['brown',       'RoyalBlue3'],
+                       \ ['Darkblue',    'SeaGreen3'],
+                       \ ['darkgray',    'DarkOrchid3'],
+                       \ ['darkgreen',   'firebrick3'],
+                       \ ['darkcyan',    'RoyalBlue3'],
+                       \ ['darkred',     'SeaGreen3'],
+                       \ ['darkmagenta', 'DarkOrchid3'],
+                       \ ['brown',       'firebrick3'],
+                       \ ['gray',        'RoyalBlue3'],
+                       \ ['darkmagenta', 'DarkOrchid3'],
+                       \ ['Darkblue',    'firebrick3'],
+                       \ ['darkgreen',   'RoyalBlue3'],
+                       \ ['darkcyan',    'SeaGreen3'],
+                       \ ['darkred',     'DarkOrchid3'],
+                       \ ['red',         'firebrick3'],
+                       \ ]
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
@@ -272,6 +281,7 @@ nmap <leader>6 <Plug>AirlineSelectTab6
 nmap <leader>7 <Plug>AirlineSelectTab7
 nmap <leader>8 <Plug>AirlineSelectTab8
 nmap <leader>9 <Plug>AirlineSelectTab9
+nmap <leader>0 <Plug>AirlineSelectTab10
 
 "taglist
 let Tlist_Show_One_File=1
@@ -362,30 +372,31 @@ imap <silent> <F9> <Plug>MarkdownPreview        " for insert mode
 nmap <silent> <F10> <Plug>StopMarkdownPreview    " for normal mode
 imap <silent> <F10> <Plug>StopMarkdownPreview    " for insert mode
 
+
+" easymotion
+let g:EasyMotion_smartcase = 1
+"let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
+map <leader><leader>h <Plug>(easymotion-linebackward)
+map <leader><Leader>j <Plug>(easymotion-j)
+map <leader><Leader>k <Plug>(easymotion-k)
+map <leader><leader>l <Plug>(easymotion-lineforward)
+" 重复上一次操作, 类似repeat插件, 很强大
+map <leader><leader>. <Plug>(easymotion-repeat)
+
 " YCM
-set completeopt=longest,menu    "让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
+" set completeopt=longest,menu    "让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
+" 千万不能加上面这句，加了就不能.出补全提示了！！！
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif "离开插入模式后自动关闭预览窗口
 inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"    "回车即选中当前项
-"上下左右键的行为 会显示其他信息
-inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
-inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
 " 跳转到定义处
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <F6> :YcmForceCompileAndDiagnostics<CR>    "force recomile with syntastic
-" nnoremap <leader>lo :lopen<CR>    "open locationlist
-" nnoremap <leader>lc :lclose<CR>   "close locationlist
-inoremap <leader><leader> <C-x><C-o>
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-" 不显示开启vim时检查ycm_extra_conf文件的信息
 let g:ycm_confirm_extra_conf=0
 " 开启基于tag的补全，可以在这之后添加需要的标签路径
 let g:ycm_collect_identifiers_from_tags_files=1
 "注释和字符串中的文字也会被收入补全
 let g:ycm_collect_identifiers_from_comments_and_strings = 0
-" 输入第2个字符开始补全
-let g:ycm_min_num_of_chars_for_completion=2
+" 输入第1个字符开始补全
+let g:ycm_min_num_of_chars_for_completion=1
 " 禁止缓存匹配项,每次都重新生成匹配项
 let g:ycm_cache_omnifunc=0
 " 开启语义补全
@@ -394,13 +405,8 @@ let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_complete_in_comments = 1
 "在字符串输入中也能补全
 let g:ycm_complete_in_strings = 1
-
-" easymotion
-let g:EasyMotion_smartcase = 1
-"let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
-map <Leader><leader>h <Plug>(easymotion-linebackward)
-map <Leader><Leader>j <Plug>(easymotion-j)
-map <Leader><Leader>k <Plug>(easymotion-k)
-map <Leader><leader>l <Plug>(easymotion-lineforward)
-" 重复上一次操作, 类似repeat插件, 很强大
-map <Leader><leader>. <Plug>(easymotion-repeat)
+let g:ycm_key_invoke_completion = '<c-z>'
+let g:ycm_semantic_triggers =  {
+			\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{1}'],
+			\ 'cs,lua,javascript': ['re!\w{1}'],
+			\ }
