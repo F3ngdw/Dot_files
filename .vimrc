@@ -3,6 +3,7 @@ filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.fzf/
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
@@ -43,7 +44,7 @@ Plugin 'mileszs/ack.vim'
 " ack
 Plugin 'jiangmiao/auto-pairs'
 " auto-pairs
-Plugin 'ctrlpvim/ctrlp.vim'
+"Plugin 'ctrlpvim/ctrlp.vim'
 " 文件搜索
 Plugin 'airblade/vim-gitgutter'
 " git显示被编辑的行
@@ -66,6 +67,11 @@ Plugin 'tpope/vim-surround'
 " 包围
 Plugin 'Valloric/YouCompleteMe'
 " ycm
+Plugin 'junegunn/gv.vim'
+" git支持
+Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plugin 'junegunn/fzf.vim'
+" fzf
 
 
 
@@ -296,16 +302,16 @@ nnoremap <F8> :TlistToggle<CR>
 ""let g:ctrlp_cmd = 'CtrlP'
 ""nmap <leader>f :CtrlPMRUFIles<CR>
 ""nmap <leader>b :CtrlPBuffer<CR>
-let g:ctrlp_working_path_mode = 0
-let g:ctrlp_match_window_bottom = 1
-let g:ctrlp_max_height = 15
-let g:ctrlp_match_window_reversed = 0 
-let g:ctrlp_mruf_max = 500 
-let g:ctrlp_follow_symlinks = 1 
-let g:ctrlp_by_filename = 1
-let g:ctrlp_regexp = 0
-let g:ctrlp_line_prefix = '⇒  '
-let g:ctrlp_open_new_file = 'v'
+" let g:ctrlp_working_path_mode = 0
+" let g:ctrlp_match_window_bottom = 1
+" let g:ctrlp_max_height = 15
+" let g:ctrlp_match_window_reversed = 0
+" let g:ctrlp_mruf_max = 500
+" let g:ctrlp_follow_symlinks = 1
+" let g:ctrlp_by_filename = 1
+" let g:ctrlp_regexp = 0
+" let g:ctrlp_line_prefix = '⇒  '
+" let g:ctrlp_open_new_file = 'v'
 
 " supertab
 let g:SuperTabRetainCompletionType = 2
@@ -410,3 +416,16 @@ let g:ycm_semantic_triggers =  {
 			\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{1}'],
 			\ 'cs,lua,javascript': ['re!\w{1}'],
 			\ }
+
+" FZF
+" 搜文件
+nnoremap <silent> <Leader>f :Files<CR>
+" 搜buffer
+nnoremap <silent> <Leader>b :Buffers<CR> 
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                 <bang>0)
+" 搜文本
+nnoremap <silent> <Leader>A :Ag<CR>
