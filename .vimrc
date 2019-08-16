@@ -15,18 +15,10 @@ Plugin 'VundleVim/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-Plugin 'git://git.wincent.com/command-t.git'
 " git repos on your local machine (i.e. when working on your own plugin)
-Plugin 'file:///home/gmarik/path/to/plugin'
+" Plugin 'file:///home/gmarik/path/to/plugin'
 " The sparkup vim script is in a subdirectory of this repo called vim.
 " Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
 Plugin 'https://github.com/scrooloose/nerdtree'
 " tree
 Plugin 'kien/rainbow_parentheses.vim'
@@ -58,8 +50,8 @@ Plugin 'fatih/vim-go'
 " golang
 Plugin 'majutsushi/tagbar'
 " tagbar
-Plugin 'iamcco/mathjax-support-for-mkdp'
-Plugin 'iamcco/markdown-preview.vim'
+" Plugin 'iamcco/mathjax-support-for-mkdp'
+" Plugin 'iamcco/markdown-preview.vim'
 " markdown
 Plugin 'easymotion/vim-easymotion'
 " easymotion跳转
@@ -72,10 +64,9 @@ Plugin 'junegunn/gv.vim'
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
 " fzf
+Plugin 'itchyny/vim-cursorword'
 
 
-
-" All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
@@ -99,10 +90,11 @@ if (empty($TMUX))
   endif
 endif
 
-syntax on
 colorscheme onedark
 let g:airline_theme='onedark'
 
+
+syntax on
 set background=dark
 set mouse=a
 set t_Co=256
@@ -121,6 +113,9 @@ set showmatch
 set nu
 set expandtab
 set wildmenu   " wild char completion menu
+set backspace=indent,eol,start
+" 搜索高亮色
+hi Search term=standout ctermfg=0 ctermbg=154
 
 
 let mapleader = ','
@@ -206,7 +201,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 "不同颜色括号
 let g:rbpt_colorpairs = [
-                       \ ['brown',       'RoyalBlue3'],
+                       \ ['cyan',       'SeaGreen3'],
                        \ ['Darkblue',    'SeaGreen3'],
                        \ ['darkgray',    'DarkOrchid3'],
                        \ ['darkgreen',   'firebrick3'],
@@ -245,7 +240,7 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 " ack.vim
-let g:ackprg = 'ag --vimgrep --smart-case --ignore-dir=tags' 
+let g:ackprg = 'ag --vimgrep --smart-case --ignore-dir=tags'
 let g:ackhighlight = 1
 nnoremap <leader>v :Ack! -w <c-r><c-w><cr>
 
@@ -343,7 +338,7 @@ let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
 let g:NERDCommentEmptyLines = 1
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
-" Enable NERDCommenterToggle to check all selected lines is commented or not 
+" Enable NERDCommenterToggle to check all selected lines is commented or not
 let g:NERDToggleCheckAllLines = 1
 
 " tagbar
@@ -412,16 +407,16 @@ let g:ycm_complete_in_comments = 1
 "在字符串输入中也能补全
 let g:ycm_complete_in_strings = 1
 let g:ycm_key_invoke_completion = '<c-z>'
-let g:ycm_semantic_triggers =  {
-			\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{1}'],
-			\ 'cs,lua,javascript': ['re!\w{1}'],
-			\ }
+let g:ycm_semantic_triggers = {
+        \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{1}'],
+	\ 'cs,lua,javascript': ['re!\w{1}'],
+	\ }
 
 " FZF
 " 搜文件
 nnoremap <silent> <Leader>f :Files<CR>
 " 搜buffer
-nnoremap <silent> <Leader>b :Buffers<CR> 
+nnoremap <silent> <Leader>b :Buffers<CR>
 command! -bang -nargs=* Ag
   \ call fzf#vim#ag(<q-args>,
   \                 <bang>0 ? fzf#vim#with_preview('up:60%')
@@ -429,3 +424,12 @@ command! -bang -nargs=* Ag
   \                 <bang>0)
 " 搜文本
 nnoremap <silent> <Leader>A :Ag<CR>
+
+" ALE
+let g:ale_sign_column_always = 1
+let g:ale_set_highlights = 0
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+" 文件内容发生变化时不进行检查
+let g:ale_lint_on_text_changed = 'never'
+" 打开文件时不进行检查
+let g:ale_lint_on_enter = 0
