@@ -28,7 +28,7 @@ Plugin 'vim-airline/vim-airline-themes'
 " 状态栏
 Plugin 'w0rp/ale'
 " 自动代码检测
-Plugin 'scrooloose/syntastic'
+" Plugin 'scrooloose/syntastic'
 " 语法检测
 Plugin 'Yggdroot/indentLine'
 " 缩进线
@@ -115,7 +115,7 @@ set expandtab
 set wildmenu   " wild char completion menu
 set backspace=indent,eol,start
 " 搜索高亮色
-hi Search term=standout ctermfg=0 ctermbg=154
+hi Search term=standout ctermfg=0 ctermbg=yellow
 
 
 let mapleader = ','
@@ -125,8 +125,8 @@ nnoremap <leader>sv :source ~/.vimrc<cr>
 " 空格取消高亮
 nnoremap <silent><space> :nohl<cr>
 " 滚屏使光标所在行处于屏幕中间
-nnoremap j jzz
-nnoremap k kzz
+" nnoremap j jzz
+" nnoremap k kzz
 " 正常模式下 <c-w>+j,k,h,l 调整分割窗口大小
 nnoremap <c-w>j :res +20<cr>
 nnoremap <c-w>k :res -20<cr>
@@ -193,7 +193,7 @@ endfunc
 
 
 "F3显示文件树
-nnoremap <F1> :NERDTreeToggle<CR>
+nnoremap <silent><F1> :NERDTreeToggle<CR>
 let NERDTreeIgnore=['\.pyc', '\~$', '\.swp']
 let NERDTreeShowBookmarks=2
 let NERDTreeShowLineNumbers=1
@@ -225,11 +225,6 @@ au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
 
-" 自动代码检测
-let g:ale_fix_on_save = 1
-let g:ale_completion_enabled = 1
-let g:ale_sign_column_always = 1
-let g:airline#extensions#ale#enabled = 1
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -290,7 +285,7 @@ let Tlist_Exit_OnlyWindow=1
 let Tlist_Ctags_Cmd="/usr/local/bin/ctags"
 let Tlist_Use_SingleClick=1
 let Tlist_Use_Right_Window=1
-nnoremap <F8> :TlistToggle<CR>
+nnoremap <silent><F8> :TlistToggle<CR>
 
 " ctrlp
 ""let g:ctrlp_map = '<leader>p'
@@ -390,7 +385,9 @@ map <leader><leader>. <Plug>(easymotion-repeat)
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif "离开插入模式后自动关闭预览窗口
 inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"    "回车即选中当前项
 " 跳转到定义处
-nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>gd :YcmCompleter GoToDefinition<cr>
+nnoremap <leader>g :YcmCompleter GoToDeclaration<cr>
 let g:ycm_confirm_extra_conf=0
 " 开启基于tag的补全，可以在这之后添加需要的标签路径
 let g:ycm_collect_identifiers_from_tags_files=1
@@ -428,8 +425,16 @@ nnoremap <silent> <Leader>A :Ag<CR>
 " ALE
 let g:ale_sign_column_always = 1
 let g:ale_set_highlights = 0
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 " 文件内容发生变化时不进行检查
 let g:ale_lint_on_text_changed = 'never'
 " 打开文件时不进行检查
 let g:ale_lint_on_enter = 0
+let g:ale_fix_on_save = 1
+let g:ale_completion_enabled = 1
+let g:airline#extensions#ale#enabled = 1
+"自定义error和warning图标
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚠'
