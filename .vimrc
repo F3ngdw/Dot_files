@@ -114,6 +114,7 @@ set nu
 set expandtab
 set wildmenu   " wild char completion menu
 set backspace=indent,eol,start
+set splitbelow splitright
 " 搜索高亮色
 hi Search term=standout ctermfg=0 ctermbg=yellow
 
@@ -125,8 +126,8 @@ nnoremap <leader>sv :source ~/.vimrc<cr>
 " 空格取消高亮
 nnoremap <silent><space> :nohl<cr>
 " 滚屏使光标所在行处于屏幕中间
-" nnoremap j jzz
-" nnoremap k kzz
+nnoremap j jzz
+nnoremap k kzz
 " 正常模式下 <c-w>+j,k,h,l 调整分割窗口大小
 nnoremap <c-w>j :res +20<cr>
 nnoremap <c-w>k :res -20<cr>
@@ -148,6 +149,9 @@ augroup resCur
 augroup END
 " abbrev
 source ~/.vim/abbrev.vim
+nnoremap <F2> :setlocal spell! spelllang=en_us<cr>
+" Automatically deletes all trailing whitespace on save
+autocmd BufWritePre * %s/\s\+$//e
 
 
 "python定制
@@ -225,14 +229,14 @@ au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
 
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
 " ack.vim
 let g:ackprg = 'ag --vimgrep --smart-case --ignore-dir=tags'
@@ -429,7 +433,7 @@ let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 " 文件内容发生变化时不进行检查
-let g:ale_lint_on_text_changed = 'never'
+" let g:ale_lint_on_text_changed = 'never'
 " 打开文件时不进行检查
 let g:ale_lint_on_enter = 0
 let g:ale_fix_on_save = 1
@@ -438,3 +442,6 @@ let g:airline#extensions#ale#enabled = 1
 "自定义error和warning图标
 let g:ale_sign_error = '✗'
 let g:ale_sign_warning = '⚠'
+" Check Python files with flake8 and pylint.
+" let b:ale_linters = ['flake8', 'pylint']
+let b:ale_linters = ['flake8']
