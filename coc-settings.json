@@ -1,10 +1,9 @@
 {
+    // 补全
     // Enable preselect feature on neovim, default: `true`
     "suggest.enablePreselect": true,
     // Add preview option to `completeopt`, default: `false`
     "suggest.enablePreview": true,
-    // completion automatically select the first completed
-    "suggest.noselect": false,
     // "suggest.triggerAfterInsertEnter": true
     "suggest.minTriggerInputLength": 1,
     // Target to show hover information, default is floating window when possible.
@@ -15,8 +14,15 @@
     // 不配置这个使用函数跳转命令行有报错
     "python.jediEnabled": false,
 
+    // lint提示
     "diagnostic.checkCurrentLine": true,
+    "diagnostic.maxWindowWidth": 120,
     "python.linting.enabled": true, 
-    "python.linting.flake8Enabled": true
+    "python.linting.flake8Enabled": true,
+    "diagnostic.enableHighlightLineNumber": false,
+    "diagnostic.errorSign": "!",
+    "diagnostic.warningSign": "⚠",
+    "diagnostic.infoSign": "!",
+    "diagnostic.hintSign": ">>"
 
 }
