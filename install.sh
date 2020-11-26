@@ -25,6 +25,7 @@ else
     if [ -e ~/.config/nvim/init.vim ]; then
         echo "init.vim already exists. cp init.vim.bak"
         cp ~/.config/nvim/init.vim ~/.config/nvim/init.vim.bak
+    fi
 fi
 echo "cp ./init.vim ~/.config/nvim/init.vim ..."
 cp ./init.vim ~/.config/nvim/init.vim
@@ -36,6 +37,7 @@ cp ./coc-settings.json ~/.config/nvim/coc-settings.json
 if [ -e ~/.tmux.conf ]; then
     echo ".tmux.conf already exists. cp .tmux.conf.bak"
     cp ~/.tmux.conf ~/.tmux.conf.bak
+fi
 echo "cp ./.tmux.conf ~/.tmux.conf"
 cp ./.tmux.conf ~/.tmux.conf
 
@@ -47,7 +49,7 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # 安装ag
-yum install the_silver_searcher
+yum install -y the_silver_searcher
 
 # 安装fzf
 git clone --depth 1 https://github.com/junegunn/fzf/git ~/.fzf
