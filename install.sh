@@ -52,6 +52,6 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 yum install -y the_silver_searcher
 
 # 安装fzf
-git clone --depth 1 https://github.com/junegunn/fzf/git ~/.fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 cd ~/.fzf
 ./install
