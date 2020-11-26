@@ -1,7 +1,5 @@
 #!/bin/bash
 
-cd ~
-
 # 安装tmux
 if [ `tmux -v` ]; then
     echo "tmux already installed"
@@ -28,18 +26,18 @@ else
         echo "init.vim already exists. cp init.vim.bak"
         cp ~/.config/nvim/init.vim ~/.config/nvim/init.vim.bak
 fi
-echo "cp ~/Dot_files/init.vim ~/.config/nvim/init.vim ..."
-cp ~/Dot_files/init.vim ~/.config/nvim/init.vim
+echo "cp ./init.vim ~/.config/nvim/init.vim ..."
+cp ./init.vim ~/.config/nvim/init.vim
 
-echo "cp ~/Dot_files/coc-settings.json ~/.config/nvim/coc-settings.json"
-cp ~/Dot_files/coc-settings.json ~/.config/nvim/coc-settings.json
+echo "cp ./coc-settings.json ~/.config/nvim/coc-settings.json"
+cp ./coc-settings.json ~/.config/nvim/coc-settings.json
 
 # tmux配置文件
 if [ -e ~/.tmux.conf ]; then
     echo ".tmux.conf already exists. cp .tmux.conf.bak"
     cp ~/.tmux.conf ~/.tmux.conf.bak
-echo "cp ~/Dot_files/.tmux.conf ~/.tmux.conf"
-cp ~/Dot_files/.tmux.conf ~/.tmux.conf
+echo "cp ./.tmux.conf ~/.tmux.conf"
+cp ./.tmux.conf ~/.tmux.conf
 
 # 安装node.js
 curl -sL install-node.now.sh/lts | bash
