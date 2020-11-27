@@ -417,3 +417,8 @@ function! s:check_back_space() abort
 endfunction
 
 let g:coc_snippet_next = '<tab>'
+
+
+" ==========coc-spell-checker
+vmap <leader>a <Plug>(coc-codeaction-selected)
+nmap <leader>a <Plug>(coc-codeaction-selected)

@@ -23,6 +23,13 @@
     "diagnostic.errorSign": "!",
     "diagnostic.warningSign": "⚠",
     "diagnostic.infoSign": "!",
-    "diagnostic.hintSign": ">>"
+    "diagnostic.hintSign": ">>",
+
+    // explorer
+    "explorer.icon.enableNerdfont": true,
+    "cSpell.userWords": [
+      "consts",
+      "jsonify"
+    ]
 
 }
