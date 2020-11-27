@@ -15,8 +15,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 "注释
 Plug 'scrooloose/nerdcommenter'
-"文件树
-Plug 'preservim/nerdtree'
 "tag
 Plug 'majutsushi/tagbar'
 "easymotion
@@ -105,17 +103,6 @@ augroup resCur
 augroup END
 
 
-
-
-"============================== Nerdtree ============================== 
-nnoremap <silent><leader>w :NERDTreeToggle<CR>
-let NERDTreeIgnore=['\.pyc', '\~$', '\.swp']
-let NERDTreeShowBookmarks=2
-let NERDTreeShowLineNumbers=1
-"当打开vim且没有文件时自动打开NERDTree
-"autocmd vimenter * if !argc() | NERDTree | endif
-
-
 "============================== Ack ============================== 
 let g:ackprg = 'ag --vimgrep --smart-case --ignore-dir=tags'
 let g:ackhighlight = 1
@@ -183,6 +170,22 @@ map <leader><Leader>k <Plug>(easymotion-k)
 map <leader><leader>l <Plug>(easymotion-lineforward)
 " 重复上一次操作, 类似repeat插件, 很强大
 map <leader><leader>. <Plug>(easymotion-repeat)
+
+
+
+"============================== Fzf ============================== 
+" 搜文件
+nnoremap <silent> <Leader>f :Files<CR>
+" 搜buffer
+nnoremap <silent> <Leader>b :Buffers<CR>
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                 <bang>0)
+" 搜文本
+nnoremap <silent> <Leader>s :Ag<CR>
+
 
 
 
@@ -344,27 +347,73 @@ nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
 nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document.
 nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols.
-nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list.
-nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
-nnoremap <silent><nowait> <space>f  :<C-u>CocList gfiles<CR>
+nnoremap <silent><nowait> <space>g  :<C-u>CocList gstatus<CR>
 
 
+" ==========coc-explorer
+nnoremap <leader>w :CocCommand explorer<CR>
+function! s:coc_list_current_dir(args)
+	let node_info = CocAction('runCommand', 'explorer.getNodeInfo', 0)
+	execute 'cd ' . fnamemodify(node_info['fullpath'], ':h')
+	execute 'CocList ' . a:args
+endfunction
 
-"============================== Fzf ============================== 
-" 搜文件
-nnoremap <silent> <Leader>f :Files<CR>
-" 搜buffer
-nnoremap <silent> <Leader>b :Buffers<CR>
-command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(<q-args>,
-  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \                 <bang>0)
-" 搜文本
-nnoremap <silent> <Leader>s :Ag<CR>
+function! s:init_explorer(bufnr)
+	call setbufvar(a:bufnr, '&winblend', 50)
+endfunction
+
+function! s:enter_explorer()
+	if !exists('b:has_enter_coc_explorer') && &filetype == 'coc-explorer'
+		" more mappings
+		nmap <buffer> <Leader>gg :call <SID>coc_list_current_dir('-I grep')<CR>
+		nmap <buffer> <Leader>gG :call <SID>coc_list_current_dir('-I grep -regex')<CR>
+		nmap <buffer> <C-p> :call <SID>coc_list_current_dir('files')<CR>
+		let b:has_enter_coc_explorer = v:true
+	endif
+	" statusline
+	setl statusline=coc-explorer
+endfunction
+
+augroup CocExplorerCustom
+	autocmd!
+	autocmd BufEnter call <SID>enter_explorer()
+augroup END
+
+" hook for explorer window initialized
+function! CocExplorerInited(filetype, bufnr)
+	" transparent
+	call setbufvar(a:bufnr, '&winblend', 10)
+endfunction
+
+
+" ==========coc-snippets
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" Use <leader>x for convert visual selected code to snippet
+xmap <leader>x  <Plug>(coc-convert-snippet)
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
