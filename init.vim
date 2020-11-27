@@ -389,4 +389,3 @@ endfunction
 " ==========coc-spell-checker
 vmap <leader>a <Plug>(coc-codeaction-selected)
 nmap <leader>a <Plug>(coc-codeaction-selected)
-let g:coc_git_blame = '<leader>g'
