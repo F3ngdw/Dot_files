@@ -17,8 +17,8 @@
     // lint提示
     "diagnostic.checkCurrentLine": true,
     "diagnostic.maxWindowWidth": 120,
-    "python.linting.enabled": true, 
-    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": false, 
+    "python.linting.flake8Enabled": false,
     "diagnostic.enableHighlightLineNumber": false,
     "diagnostic.errorSign": "!",
     "diagnostic.warningSign": "⚠",
@@ -27,11 +27,6 @@
     "diagnostic.messageTarget": "echo",
 
     // explorer
-    "explorer.icon.enableNerdfont": true,
-    "cSpell.userWords": [
-      "consts",
-      "jsonify"
-    ],
-    "git.addGBlameToBufferVar": true
+    "explorer.icon.enableNerdfont": true
 
 }

@@ -24,6 +24,10 @@ Plug 'jiangmiao/auto-pairs'
 "fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+"git
+Plug 'tpope/vim-fugitive'
+"lint
+Plug 'neomake/neomake'
 call plug#end()
 
 colorscheme monokai
@@ -389,3 +393,15 @@ endfunction
 " ==========coc-spell-checker
 vmap <leader>a <Plug>(coc-codeaction-selected)
 nmap <leader>a <Plug>(coc-codeaction-selected)
+
+
+let g:neomake_python_flake8_maker = {
+    \ 'args': ['--ignore=E501',  '--format=default'],
+    \ 'errorformat':
+        \ '%E%f:%l: could not compile,%-Z%p^,' .
+        \ '%A%f:%l:%c: %t%n %m,' .
+        \ '%A%f:%l: %t%n %m,' .
+        \ '%-G%.%#',
+    \ }
+let g:neomake_python_enabled_makers = ['flake8']
+call neomake#configure#automake('nrwi', 500)
