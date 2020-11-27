@@ -25,6 +25,8 @@
     "diagnostic.infoSign": "!",
     "diagnostic.hintSign": ">>",
     "diagnostic.messageTarget": "echo",
+    // flake8忽略的lint提示, 501是line too long
+    "python.linting.flake8Args": [501],
 
     // explorer
     "explorer.icon.enableNerdfont": true,
