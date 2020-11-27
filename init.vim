@@ -176,6 +176,18 @@ map <leader><leader>l <Plug>(easymotion-lineforward)
 map <leader><leader>. <Plug>(easymotion-repeat)
 
 
+"============================== Neomake ============================== 
+let g:neomake_python_flake8_maker = {
+    \ 'args': ['--ignore=E501',  '--format=default'],
+    \ 'errorformat':
+        \ '%E%f:%l: could not compile,%-Z%p^,' .
+        \ '%A%f:%l:%c: %t%n %m,' .
+        \ '%A%f:%l: %t%n %m,' .
+        \ '%-G%.%#',
+    \ }
+let g:neomake_python_enabled_makers = ['flake8']
+call neomake#configure#automake('nrwi', 500)
+
 
 "============================== Fzf ============================== 
 " 搜文件
@@ -355,7 +367,7 @@ nnoremap <silent><nowait> <space>g  :<C-u>CocList gstatus<CR>
 
 
 " ==========coc-explorer
-nnoremap <leader>w :CocCommand explorer<CR>
+nnoremap <silent><leader>w :CocCommand explorer<CR>
 function! s:coc_list_current_dir(args)
 	let node_info = CocAction('runCommand', 'explorer.getNodeInfo', 0)
 	execute 'cd ' . fnamemodify(node_info['fullpath'], ':h')
@@ -388,20 +400,3 @@ function! CocExplorerInited(filetype, bufnr)
 	" transparent
 	call setbufvar(a:bufnr, '&winblend', 10)
 endfunction
-
-
-" ==========coc-spell-checker
-vmap <leader>a <Plug>(coc-codeaction-selected)
-nmap <leader>a <Plug>(coc-codeaction-selected)
-
-
-let g:neomake_python_flake8_maker = {
-    \ 'args': ['--ignore=E501',  '--format=default'],
-    \ 'errorformat':
-        \ '%E%f:%l: could not compile,%-Z%p^,' .
-        \ '%A%f:%l:%c: %t%n %m,' .
-        \ '%A%f:%l: %t%n %m,' .
-        \ '%-G%.%#',
-    \ }
-let g:neomake_python_enabled_makers = ['flake8']
-call neomake#configure#automake('nrwi', 500)
