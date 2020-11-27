@@ -27,10 +27,6 @@
     "diagnostic.messageTarget": "echo",
 
     // explorer
-    "explorer.icon.enableNerdfont": true,
-
-    // 解决unresolved import
-    "python.pythonPath": "${workspaceRoot}",
-    "python.envFile": "${workspaceFolder}/.env,"
+    "explorer.icon.enableNerdfont": true
 
 }
