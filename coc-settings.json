@@ -24,6 +24,7 @@
     "diagnostic.warningSign": "⚠",
     "diagnostic.infoSign": "!",
     "diagnostic.hintSign": ">>",
+    "diagnostic.messageTarget": "echo",
 
     // explorer
     "explorer.icon.enableNerdfont": true,
